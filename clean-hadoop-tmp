@@ -16,7 +16,7 @@
 require 'time'
 
 lockfile   = "/var/tmp/clean-hadoop-tmp.lock"
-threshold  = 10800 # 3 Hours
+threshold  = 2592000 # 30 days
 now        = Time.new.to_i
 batch_size = 500 # To work around the ARG_MAX limit in bash.
 
