@@ -28,7 +28,7 @@ unless File.exists?(lockfile)
   puts "Dropping lock file. (#{lockfile})"
   File.new(lockfile, "w")
 
-  target_dirs = `hadoop fs -ls /tmp | grep -v hive-hive`.split("\n")[1..-1]
+  target_dirs = `hadoop fs -ls /tmp | grep -v hive-hive | grep -v hadoop-yarn`.split("\n")[1..-1]
   puts "Scanning for directories in HDFS' /tmp older than #{threshold} seconds."
 
   target_dirs.each do |tdir|
@@ -52,7 +52,7 @@ unless File.exists?(lockfile)
   end
 
   puts "Scanning for empty directories in HDFS /tmp"
-  target_dirs = `hadoop fs -du /tmp`.split("\n")[1..-1]
+  target_dirs = `hadoop fs -du /tmp | grep -v hive-hive | grep -v hadoop-yarn`.split("\n")[1..-1]
   target_dirs.each do |tdir|
     if (tdir.split(" ")[0] == "0")
       `hadoop fs -rmdir #{tdir.split(" ")[1]}`
